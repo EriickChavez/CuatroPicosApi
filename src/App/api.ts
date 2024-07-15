@@ -19,7 +19,7 @@ class Api {
   private routeNotFound() {
     this.api.use((req, res, next) => {
       console.warn(
-        `404 - Not Found: ${ENV.baseUrl}:${ENV.baseUrl}${req.originalUrl}`
+        `404 - Not Found: ${ENV.baseUrl}${req.originalUrl}`
       );
       res.status(404).json({ message: "Not Found" });
     });
