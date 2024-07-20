@@ -1,5 +1,4 @@
 import UserController from "@/Controller/UserController";
-import generateJWTToken from "@/Utils/token";
 import { emailValidation, passwordValidation } from "@/Utils/Validators";
 import { Router, Request, Response } from "express";
 
