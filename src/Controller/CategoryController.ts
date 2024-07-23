@@ -1,6 +1,5 @@
 import { DATABASE_TABLE } from "@/Enum/DATABASE";
 import { ICategory, ICategoryController } from "@/Intefaces/ICategory";
-import { Connection } from "mysql2";
 import DatabaseController from "./DatabaseController";
 import db from "@/Config/Db";
 
