@@ -7,5 +7,5 @@ export interface IProductController {
     getById: (id: string) => Promise<IProduct>;
     add: (data: IProduct) => Promise<IProduct>;
     update: (id: string, data: IProduct) => Promise<IProduct>;
-    delete: (id: string) => Promise<IProduct>;
+    delete: (id: string) => Promise<boolean>;
 }

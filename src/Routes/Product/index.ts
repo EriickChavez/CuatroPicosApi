@@ -27,7 +27,7 @@ const ProductRoutes = (app: Router) => {
 
     route.post("/add", async (req: Request, res: Response) => {
         try {
-            const product = await ProductController.add(req.body.product);
+            const product = await ProductController.add(req.body);
             return res.status(200).json({ data: product });
         } catch (err: any) {
             return res.status(err.status).json({ message: err.message });

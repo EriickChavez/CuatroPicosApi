@@ -1,51 +1,74 @@
-import { IUser, IUserController } from "@/Intefaces/IUser";
+import { IUser, IUserController, IUserResponse } from "@/Intefaces/IUser";
 import generateJWTToken from "@/Utils/token";
 import { v4 as uuidv4 } from "uuid";
+import DatabaseController from "./DatabaseController";
+import { DATABASE_TABLE } from "@/Enum/DATABASE";
 
-const UserController: IUserController = {
-  login(email, password): Promise<{ user: IUser; token: string }> {
-    return new Promise((resolve, reject) => {
-      // TODO: checar en base de datos
-      const isExist: boolean = false;
+class UserController implements IUserController {
+  db: DatabaseController<IUser>;
 
-      if (!isExist) {
-        const user: IUser = {
+  constructor() {
+    this.db = new DatabaseController<IUser>(DATABASE_TABLE.PRODUCT);
+  }
+  async login(email: string, password: string): Promise<IUserResponse> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!email || !password) {
+          return reject({ status: 500, message: "All fields are required" });
+        }
+
+        const item = await this.db.login(email, password);
+
+        if (!!item) {
+          const token = generateJWTToken(item.id);
+          return resolve({ user: item, token });
+        } else {
+          return reject("Invalid email or password");
+        }
+      } catch (err: any) {
+        return reject({
+          status: 500,
+          message: "UserController: " + err.message,
+        });
+      }
+    });
+  }
+
+  async register(email: string, password: string): Promise<IUserResponse> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        if (!email || !password) {
+          return reject({ status: 500, message: "All fields are required" });
+        }
+
+        const data: IUser = {
           id: uuidv4(),
           email,
           password,
         };
 
-        const token = generateJWTToken(user.id);
+        const item = await this.db.register(data);
 
-        resolve({
-          user,
-          token,
-        });
-      } else {
-        reject("User not found");
-      }
-    });
-  },
-  register(name, email, password) {
-    return new Promise((resolve, reject) => {
-      if (email === "CZ5Wc@example.com") {
-        reject("User already exists");
-      } else {
-        const user: IUser = {
-          id: uuidv4(),
-          email,
-          password,
-        };
-
-        const token = generateJWTToken(user.id);
-
-        resolve({
-          user,
-          token,
+        if (!!item) {
+          const token = generateJWTToken(item.id);
+          return resolve({ user: item, token });
+        } else {
+          return reject("Invalid email or password");
+        }
+      } catch (err:any) {
+        return reject({
+          status: 500,
+          message: "UserController: " + err.message,
         });
       }
     });
-  },
-};
+  }
 
-export default UserController;
+  async get(): Promise<IUser[]> {
+    return new Promise(async (resolve, reject) => {
+      return resolve(await this.db.get());
+    });
+  }
+}
+
+export default new UserController();

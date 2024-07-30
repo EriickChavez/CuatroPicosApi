@@ -1,4 +1,4 @@
-import { SUCCESS } from "@/Constants/message";
+import { ERROR, SUCCESS } from "@/Constants/message";
 import CategoryController from "@/Controller/CategoryController";
 import { Router, Request, Response } from "express";
 
@@ -38,7 +38,7 @@ const CategoryRoutes = (app: Router) => {
         try {
             const category = await CategoryController.update(
                 req.body.id,
-                req.body.category
+                req.body.data
             );
             return res.status(200).json({ data: category });
         } catch (err: any) {
@@ -48,7 +48,10 @@ const CategoryRoutes = (app: Router) => {
 
     route.delete("/delete", async (req: Request, res: Response) => {
         try {
-            await CategoryController.delete(req.body.id);
+            const isOk =await CategoryController.delete(req.body.id);
+            if(!isOk){
+                return res.status(500).json({ message: ERROR.INTERNAL_SERVER_ERROR });
+            }
             return res.status(200).json({ message: SUCCESS.DELETED });
         } catch (err: any) {
             return res.status(err.status).json({ message: err.message });

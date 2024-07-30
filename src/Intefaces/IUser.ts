@@ -3,15 +3,18 @@ export interface IUser {
   email: string;
   password: string;
 }
+export interface IUserResponse{
+  user: IUser;
+  token: string
+}
 
 export interface IUserController {
   login(
     email: string,
     password: string
-  ): Promise<{ user: IUser; token: string }>;
+  ): Promise<IUserResponse>;
   register(
-    name: string,
     email: string,
     password: string
-  ): Promise<{ user: IUser; token: string }>;
+  ): Promise<IUserResponse>;
 }
