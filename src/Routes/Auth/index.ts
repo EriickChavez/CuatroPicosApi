@@ -18,7 +18,7 @@ const AuthRoutes = (app: Router) => {
           .json({ message: "Login Successful", data: { user, token } });
       }
     } catch (err: any) {
-      return res.status(500).json({ message: "err.message" });
+      return res.status(500).json({ message: err.message });
     }
   });
 
@@ -34,7 +34,7 @@ const AuthRoutes = (app: Router) => {
           .json({ message: "Login Successful", data: { user, token } });
       }
     } catch (err: any) {
-      return res.status(500).json({ message: "err.message" });
+      return res.status(500).json({ message: err.message });
     }
   });
 };
