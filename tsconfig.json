@@ -12,6 +12,6 @@
     "skipLibCheck": true,
     "outDir": "./dist"
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "index.ts"],
   "exclude": ["node_modules"]
 }
